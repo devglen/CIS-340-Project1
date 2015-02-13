@@ -16,17 +16,17 @@ struct mynode* quicksort(struct mynode *head)
 
 	struct mynode *current = head;
 	int pivot = head->value;
-	struct mynode *left = (struct mynode *)malloc(sizeof(struct mynode));
-	struct mynode *right = (struct mynode *)malloc(sizeof(struct mynode));
+	struct mynode *left;
+	struct mynode *right;
 	struct mynode *leftstart = left;
 	struct mynode *rightstart = right;
-	do
+	current = current->next;
+	while(current->next != NULL)
 	{
-		current = current->next;
 
 		if(current->value < pivot)
 		{
-
+			if(!left)
 			left->next = (struct mynode *)malloc(sizeof(struct mynode));
 			left = left->next;
 			left->value = current->value;
@@ -34,43 +34,19 @@ struct mynode* quicksort(struct mynode *head)
 		}
 		else
 		{
+			right->value = current->value;
 			right->next = (struct mynode *)malloc(sizeof(struct mynode));
 			right = right->next;
-			right->value = current->value;
-
 		}
-	}while(current->next !=NULL);
-
-
-	if(rightstart != right)
-	{
-		rightstart = rightstart->next;
-		rightstart = quicksort(rightstart);
-		printf("right");
-
-		printlist(rightstart);
-
-		head->next =rightstart;
-		rightstart->prev = head;
+		current = current->next;
 	}
-
-	if(leftstart != left)
-	{
-		leftstart = leftstart->next;
-		leftstart = quicksort(leftstart);
-		printf("left");
-
-		printlist(leftstart);
-
-		left->next = head;
-		head->prev = left;
-		return leftstart;
-	}
-	else
-	{
-		return head;
-	}
-
+	leftstart = quicksort(leftstart);
+	rightstart = quicksort(rightstart);
+	printlist(leftstart);
+	left->next = head;
+	printlist(rightstart);
+	head->next = rightstart->next;
+	return leftstart->next;
 
 }
 
