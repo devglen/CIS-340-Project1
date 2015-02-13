@@ -14,7 +14,7 @@ Description:    Accepts a number of integers, creates a doubly linked list, and 
 //main method
 int main(void)
 {
-    struct mynode *list = (struct mynode *)malloc(sizeof(struct mynode)); //(struct mynode *)malloc(sizeof(struct mynode)); //head of linked list
+    struct mynode *list = (struct mynode *)malloc(sizeof(struct mynode)); //head of linked list
     struct mynode *node = list; //used to traverse linked list
     struct mynode *last = (struct mynode *)malloc(sizeof(struct mynode));
       
