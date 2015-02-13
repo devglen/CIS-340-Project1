@@ -16,4 +16,4 @@ Sample Run:
     List after sort: 
     0   2   2   4   5   6   7 
 Bugs:
-    none
+    Passes in two values, head and last, rather than just one.
