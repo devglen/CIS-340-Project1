@@ -8,29 +8,32 @@
 //this function definition is not what is specified for the assignment - Derek
 struct mynode* quicksort(struct mynode *head)
 {
-
+	//return if there is only one element
 	if( head->next == NULL)
 	{
 		return head;
 	}
-
+	
+	//declarations for creating a left and right list with less and 
+	//greater values than the first in the list, respectively 
+	//NOTE:the left and right lists have empty first nodes/////////
 	struct mynode *current = head;
 	int pivot = head->value;
-	struct mynode *left = (struct mynode *)malloc(sizeof(struct mynode));
-	struct mynode *right = (struct mynode *)malloc(sizeof(struct mynode));
-	struct mynode *leftstart = left;
-	struct mynode *rightstart = right;
-	do
+	struct mynode *leftstart = (struct mynode *)malloc(sizeof(struct mynode));
+	struct mynode *rightstart = (struct mynode *)malloc(sizeof(struct mynode));
+	struct mynode *left = leftstart;
+	struct mynode *right = rightstart;
+	
+	//parse through the entire list, spliting into left and right lists
+	//depending on if they are greater or lesser than the pivot
+	while(current->next !=NULL)
 	{
 		current = current->next;
-
 		if(current->value < pivot)
 		{
-
 			left->next = (struct mynode *)malloc(sizeof(struct mynode));
 			left = left->next;
 			left->value = current->value;
-			
 		}
 		else
 		{
@@ -39,39 +42,40 @@ struct mynode* quicksort(struct mynode *head)
 			right->value = current->value;
 
 		}
-	}while(current->next !=NULL);
-
-
-	if(rightstart != right)
-	{
-		rightstart = rightstart->next;
-		rightstart = quicksort(rightstart);
-		printf("right");
-
-		printlist(rightstart);
-
-		head->next =rightstart;
-		rightstart->prev = head;
 	}
-
-	if(leftstart != left)
+	//fill the empty first node of the right list with the pivot
+	rightstart->value = pivot;
+	//if there are new values in the left list
+	//then append the sorted left list to the sorted right list with the pivot
+	if(left != leftstart)
 	{
-		leftstart = leftstart->next;
-		leftstart = quicksort(leftstart);
-		printf("left");
-
-		printlist(leftstart);
-
-		left->next = head;
-		head->prev = left;
+		left->next = rightstart;
+		leftstart = quicksort(leftstart->next);
+		createPrevLinks(leftstart);
 		return leftstart;
 	}
+	//if there are no new values in the left list, skip it
+	//just sort the right list with the pivot in it and return it
 	else
 	{
-		return head;
+		rightstart->next  = quicksort(rightstart->next);
+		createPrevLinks(rightstart);
+		return rightstart;
 	}
+}
 
-
+//creatPrevLinks Method
+//parses through a list and creates links to previous nodes
+//this makes it a doubly linked list
+void createPrevLinks(struct mynode *node)
+{
+	struct mynode *previous = (struct mynode *)malloc(sizeof(struct mynode));	
+	while(node->next != NULL)
+	{
+		previous = node;
+		node = node->next;
+		node->prev = previous; 
+	}
 }
 
 //printlist method
@@ -80,15 +84,15 @@ void printlist(struct mynode *head)
 {
     struct mynode *node = head;
     int i;
-
-    for (i=1; node->next; i++) {
-        printf("%3d ", node->value);
+    for (i=1; node->next!=NULL; i++) {
+	printf("%3d ",node->value);
         node = node->next;  
         //goes down a line if the number of data poins printed exceeds 20 per line
         if (i % 20 == 0) {
             printf("\n");
         }
     }
+    printf("%3d ",node->value);
     printf("\n");
 }
 

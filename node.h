@@ -11,5 +11,6 @@ struct mynode {
 //declare methods to sort, print, and free the linked list
 struct mynode* quicksort(struct mynode *);
 void printlist(struct mynode *);
+void createPrevLinks(struct mynode *);
 void freelist(struct mynode *);
 #endif
