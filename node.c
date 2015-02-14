@@ -5,18 +5,16 @@
 
 //quicksort method
 //takes one node pointer and recursively sorts in acending order, returning the head node
-//this function definition is not what is specified for the assignment - Derek
 struct mynode* quicksort(struct mynode *head)
 {
 	//return if there is only one element
-	if( head->next == NULL)
-	{
+	if (head->next == NULL) {
 		return head;
 	}
 	
 	//declarations for creating a left and right list with less and 
 	//greater values than the first in the list, respectively 
-	//NOTE:the left and right lists have empty first nodes/////////
+	//NOTE: the left and right lists have empty first nodes
 	struct mynode *current = head;
 	int pivot = head->value;
 	struct mynode *leftstart = (struct mynode *)malloc(sizeof(struct mynode));
@@ -26,38 +24,31 @@ struct mynode* quicksort(struct mynode *head)
 	
 	//parse through the entire list, spliting into left and right lists
 	//depending on if they are greater or lesser than the pivot
-	while(current->next !=NULL)
-	{
-		current = current->next;
-		if(current->value < pivot)
-		{
+	while (current->next !=NULL) {
+	    current = current->next;
+		if (current->value < pivot) {
 			left->next = (struct mynode *)malloc(sizeof(struct mynode));
 			left = left->next;
 			left->value = current->value;
-		}
-		else
-		{
+		} else {
 			right->next = (struct mynode *)malloc(sizeof(struct mynode));
 			right = right->next;
 			right->value = current->value;
-
 		}
 	}
+    
 	//fill the empty first node of the right list with the pivot
 	rightstart->value = pivot;
 	//if there are new values in the left list
 	//then append the sorted left list to the sorted right list with the pivot
-	if(left != leftstart)
-	{
+	if (left != leftstart) {
 		left->next = rightstart;
 		leftstart = quicksort(leftstart->next);
 		createPrevLinks(leftstart);
 		return leftstart;
-	}
-	//if there are no new values in the left list, skip it
-	//just sort the right list with the pivot in it and return it
-	else
-	{
+	} else {
+	    //if there are no new values in the left list, skip it
+	    //just sort the right list with the pivot in it and return it
 		rightstart->next  = quicksort(rightstart->next);
 		createPrevLinks(rightstart);
 		return rightstart;
@@ -70,8 +61,7 @@ struct mynode* quicksort(struct mynode *head)
 void createPrevLinks(struct mynode *node)
 {
 	struct mynode *previous = (struct mynode *)malloc(sizeof(struct mynode));	
-	while(node->next != NULL)
-	{
+	while (node->next != NULL) {
 		previous = node;
 		node = node->next;
 		node->prev = previous; 
@@ -97,7 +87,7 @@ void printlist(struct mynode *head)
 }
 
 //freelist method
-//deletes all the nodes of a iven head, effectively erasing the linked list
+//deletes all the nodes of a given head, effectively erasing the linked list
 void freelist(struct mynode *head)
 {
     struct mynode *temp, *node = head;
